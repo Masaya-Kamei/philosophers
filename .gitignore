@@ -1,2 +1,4 @@
 philo/philo
 *.o
+*.txt
+test.c
