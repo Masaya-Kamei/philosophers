@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 12:04:23 by mkamei            #+#    #+#             */
-/*   Updated: 2021/11/06 09:30:18 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/11/06 16:02:14 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,12 @@ typedef enum e_philo_status
 	DIE		=	4
 }			t_philo_status;
 
+typedef struct e_mutex_long
+{
+	pthread_mutex_t	m;
+	long			val;
+}					t_mutex_long;
+
 typedef struct s_share
 {
 	int				philo_num;
@@ -54,8 +60,7 @@ typedef struct s_share
 	int				sleeping_ms_time;
 	int				must_eat_num;
 	long			start_us_time;
-	bool			someone_dead;
-	pthread_mutex_t	m_dead;
+	t_mutex_long	someone_dead;
 	pthread_mutex_t	*m_forks;
 }					t_share;
 
@@ -64,9 +69,8 @@ typedef struct s_person
 	int				id;
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	*left_fork;
-	bool			dead_flag;
-	long			last_eat_us_time;
-	pthread_mutex_t	m_last_eat;
+	t_mutex_long	dead;
+	t_mutex_long	last_eat_us_time;
 	pthread_t		work_thread;
 	pthread_t		die_thread;
 	t_share			*share;
@@ -76,6 +80,9 @@ typedef struct s_person
 void	start_philos_thread(t_share *share, t_person *persons);
 
 // utils
+void	init_mutex_long(t_mutex_long *l, long init_value);
+long	read_mutex_long(t_mutex_long *l);
+void	write_mutex_long(t_mutex_long *l, long new_value);
 long	get_us_time(void);
 void	my_usleep(const long us_time);
 size_t	ft_strlen(const char *s);

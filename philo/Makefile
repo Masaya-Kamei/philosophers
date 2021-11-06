@@ -6,11 +6,11 @@
 #    By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/02 12:02:43 by mkamei            #+#    #+#              #
-#    Updated: 2021/11/06 10:55:06 by mkamei           ###   ########.fr        #
+#    Updated: 2021/11/06 15:40:49 by mkamei           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCSNAME=	main.c philo.c utils/str.c utils/time.c
+SRCSNAME=	main.c philo.c utils/str.c utils/time.c utils/mutex.c
 SRCSDIR	=	./srcs
 SRCS	=	$(addprefix $(SRCDIR)/, $(SRCNAME))
 
