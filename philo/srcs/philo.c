@@ -6,47 +6,43 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 17:59:26 by mkamei            #+#    #+#             */
-/*   Updated: 2021/11/05 11:58:21 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/11/06 12:22:20 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static void	put_philo_status(t_philo *philo, const char *status_msg)
+static void	put_philo_status(t_person *person, const char *status_msg)
 {
-	const int	elapsed_ms_time
-		= (get_us_time() - philo->params->start_us_time) / 1000;
+	int		elapsed_ms_time;
 
-	pthread_mutex_lock(&philo->resources->output_tty);
-	if (philo->params->death_flag == 0)
+	pthread_mutex_lock(&person->share->m_dead);
+	if (person->share->someone_dead == 0)
 	{
-		// if (status_msg[0] == 'd')
-		// 	philo->params->death_flag = 1;
-		// putnbr_with_digit(elapsed_ms_time, 6, STDOUT_FILENO);
-		// write(STDOUT_FILENO, "ms ", 3);
-		// putnbr_with_digit(philo->id + 1, 4, STDOUT_FILENO);
-		// write(STDOUT_FILENO, " ", 1);
-		// write(STDOUT_FILENO, status_msg, ft_strlen(status_msg));
-		// write(STDOUT_FILENO, "\n", 1);
-		printf("%6d ms %4d %s\n", elapsed_ms_time, philo->id + 1, status_msg);
+		if (person->dead_flag)
+			person->share->someone_dead = 1;
+		elapsed_ms_time = (get_us_time() - person->share->start_us_time) / 1000;
+		printf("%6d ms %4d %s\n", elapsed_ms_time, person->id + 1, status_msg);
 	}
-	pthread_mutex_unlock(&philo->resources->output_tty);
+	pthread_mutex_unlock(&person->share->m_dead);
 }
 
-static void	*death_timer(void *p)
+static void	*check_dead(void *p)
 {
-	t_philo	*philo;
-	long	timelimit;
+	t_person	*person;
+	long		timelimit;
 
-	philo = p;
+	person = p;
 	while (1)
 	{
-		timelimit = philo->params->ms_time_until_death * 1000
-			- (get_us_time() - philo->last_eat_us_time);
+		pthread_mutex_lock(&person->m_last_eat);
+		timelimit = person->share->ms_time_until_death * 1000
+			- (get_us_time() - person->last_eat_us_time);
+		pthread_mutex_unlock(&person->m_last_eat);
 		if (timelimit < 0)
 		{
-			put_philo_status(philo, "died");
-			philo->params->death_flag = 1;
+			person->dead_flag = 1;
+			put_philo_status(person, DIE_MSG);
 			break ;
 		}
 		my_usleep(timelimit);
@@ -54,57 +50,61 @@ static void	*death_timer(void *p)
 	return (NULL);
 }
 
-static void	philo_eat(t_philo *philo)
+static void	philo_eat(t_person *person)
 {
-	pthread_mutex_lock(philo->right_fork);
-	put_philo_status(philo, "has taken a fork");
-	pthread_mutex_lock(philo->left_fork);
-	put_philo_status(philo, "has taken a fork");
-	philo->last_eat_us_time = get_us_time();
-	put_philo_status(philo, "is eating");
-	my_usleep(philo->params->eating_ms_time * 1000);
-	pthread_mutex_unlock(philo->right_fork);
-	pthread_mutex_unlock(philo->left_fork);
+	pthread_mutex_lock(person->right_fork);
+	put_philo_status(person, FORK_MSG);
+	pthread_mutex_lock(person->left_fork);
+	put_philo_status(person, FORK_MSG);
+	pthread_mutex_lock(&person->m_last_eat);
+	person->last_eat_us_time = get_us_time();
+	pthread_mutex_unlock(&person->m_last_eat);
+	put_philo_status(person, EAT_MSG);
+	my_usleep(person->share->eating_ms_time * 1000);
+	pthread_mutex_unlock(person->right_fork);
+	pthread_mutex_unlock(person->left_fork);
 }
 
-static void	*run_philo_routine(void *p)
+static void	*run_philo_work(void *p)
 {
-	int		eat_count;
-	t_philo	*philo;
+	int			eat_count;
+	t_person	*person;
 
-	philo = p;
-	philo->right_fork = &philo->resources->forks[philo->id];
-	philo->left_fork
-		= &philo->resources->forks[(philo->id + 1) % philo->params->philo_num];
-	philo->last_eat_us_time = get_us_time();
-	pthread_create(&philo->die_thread, NULL, death_timer, philo);
-	if (philo->id % 2 == 1)
-		my_usleep(philo->params->eating_ms_time * 1000);
+	person = p;
+	person->right_fork = &person->share->m_forks[person->id];
+	person->left_fork
+		= &person->share->m_forks[(person->id + 1) % person->share->philo_num];
+	person->dead_flag = 0;
+	pthread_mutex_init(&person->m_last_eat, NULL);
+	person->last_eat_us_time = get_us_time();
+	pthread_create(&person->die_thread, NULL, check_dead, person);
+	if (person->id % 2 == 1)
+		my_usleep(person->share->eating_ms_time * 1000);
 	eat_count = 0;
-	while (philo->params->death_flag == 0)
+	while (person->share->someone_dead == 0)
 	{
-		philo_eat(philo);
-		if (++eat_count == philo->params->must_eat_num)
+		philo_eat(person);
+		if (++eat_count == person->share->must_eat_num)
 			break ;
-		put_philo_status(philo, "is sleeping");
-		my_usleep(philo->params->sleeping_ms_time * 1000);
-		put_philo_status(philo, "is thinking");
+		put_philo_status(person, SLEEP_MSG);
+		my_usleep(person->share->sleeping_ms_time * 1000);
+		put_philo_status(person, THINK_MSG);
 	}
-	pthread_detach(philo->die_thread);
+	pthread_detach(person->die_thread);
+	pthread_mutex_destroy(&person->m_last_eat);
 	return (NULL);
 }
 
-void	start_philos_thread(t_data *d)
+void	start_philos_thread(t_share *share, t_person *persons)
 {
 	int		i;
 
 	i = -1;
-	while (++i < d->params.philo_num)
+	while (++i < share->philo_num)
 	{
-		d->philos[i].id = i;
-		d->philos[i].params = &d->params;
-		d->philos[i].resources = &d->resources;
-		pthread_create(&d->philos[i].routine_thread,
-			NULL, run_philo_routine, &d->philos[i]);
+		persons[i].id = i;
+		persons[i].share = share;
+		pthread_create(
+			&persons[i].work_thread, NULL, run_philo_work, &persons[i]);
 	}
 }

@@ -6,13 +6,13 @@
 #    By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/02 12:02:43 by mkamei            #+#    #+#              #
-#    Updated: 2021/11/04 15:55:04 by mkamei           ###   ########.fr        #
+#    Updated: 2021/11/06 10:55:06 by mkamei           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCSNAME=	main.c philo.c utils/str.c utils/put.c utils/time.c
-SRCSDIR	=	./srcs/
-SRCS	=	$(addprefix $(SRCDIR), $(SRCNAME))
+SRCSNAME=	main.c philo.c utils/str.c utils/time.c
+SRCSDIR	=	./srcs
+SRCS	=	$(addprefix $(SRCDIR)/, $(SRCNAME))
 
 OBJSNAME=	$(SRCSNAME:.c=.o)
 OBJSDIR	=	./objs
@@ -43,12 +43,16 @@ re			:	fclean all
 # Use llvm clang
 # For Macos, https://stackoverflow.com/questions/53456304/mac-os-leaks-sanitizer
 
-address		:	CC		= clang
-address		:	CFLAGS	+= -g -fsanitize=address
+address		:	CC		=	clang
+address		:	CFLAGS	+=	-g -fsanitize=address
 address		:	re
 
-leak		:	CC		= clang
-leak		:	CFLAGS	+= -g -fsanitize=leak
+leak		:	CC		=	clang
+leak		:	CFLAGS	+=	-g -fsanitize=leak
 leak		:	re
 
-.PHONY		:	all clean fclean re address leak
+thread		:	CC		=	gcc
+thread		:	CFLAGS	+=	-g -fsanitize=thread
+thread		:	re
+
+.PHONY		:	all clean fclean re address leak thread

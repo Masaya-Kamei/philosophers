@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 12:37:08 by mkamei            #+#    #+#             */
-/*   Updated: 2021/11/04 16:35:23 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/11/05 15:24:33 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,12 @@ int	ft_atoi(const char *str)
 	else if (sign == -1 && (nbr - 1) > LONG_MAX)
 		return (0);
 	return (sign * nbr);
+}
+
+void	ft_putendl_fd(char *s, int fd)
+{
+	if (s == NULL)
+		return ;
+	write(fd, s, ft_strlen(s));
+	write(fd, "\n", 1);
 }
