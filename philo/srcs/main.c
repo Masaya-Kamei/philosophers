@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 12:03:53 by mkamei            #+#    #+#             */
-/*   Updated: 2021/11/06 15:56:20 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/11/22 14:15:11 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static t_status	read_cmd_arg(int argc, char **argv, t_share *share)
 		share->must_eat_num = ft_atoi(argv[5]);
 	else
 		share->must_eat_num = -1;
-	if ((share->philo_num <= 1 || share->philo_num > 1000)
+	if ((share->philo_num <= 0 || share->philo_num > 1000)
 		|| share->ms_time_until_death <= 0
 		|| share->eating_ms_time <= 0
 		|| share->sleeping_ms_time <= 0
@@ -33,7 +33,7 @@ static t_status	read_cmd_arg(int argc, char **argv, t_share *share)
 	return (SUCCESS);
 }
 
-static t_status	init_data(t_share *share, t_person **persons)
+static t_status	init_data(t_person **persons, t_share *share)
 {
 	int		i;
 
@@ -49,11 +49,12 @@ static t_status	init_data(t_share *share, t_person **persons)
 		pthread_mutex_init(&share->m_forks[i], NULL);
 	}
 	init_mutex_long(&share->someone_dead, 0);
+	init_mutex_long(&share->ate_philo_num, 0);
 	share->start_us_time = get_us_time();
 	return (SUCCESS);
 }
 
-static void	wait_philos_thread(t_share *share, t_person *persons)
+static void	wait_philos_thread(t_person *persons, t_share *share)
 {
 	int		i;
 
@@ -64,7 +65,7 @@ static void	wait_philos_thread(t_share *share, t_person *persons)
 	}
 }
 
-static void	clean_data(t_share *share, t_person *persons)
+static void	clean_data(t_person *persons, t_share *share)
 {
 	int		i;
 
@@ -73,28 +74,29 @@ static void	clean_data(t_share *share, t_person *persons)
 	{
 		pthread_mutex_destroy(&share->m_forks[i]);
 	}
-	// pthread_mutex_destroy(&share->someone_dead.m);
+	pthread_mutex_destroy(&share->someone_dead.m);
+	pthread_mutex_destroy(&share->ate_philo_num.m);
 	free(persons);
 	free(share->m_forks);
 }
 
 int	main(int argc, char **argv)
 {
-	t_share		share;
 	t_person	*persons;
+	t_share		share;
 
 	if (read_cmd_arg(argc, argv, &share) == ERROR)
 	{
 		ft_putendl_fd(USAGE_MSG, STDERR_FILENO);
 		return (1);
 	}
-	if (init_data(&share, &persons) == ERROR)
+	if (init_data(&persons, &share) == ERROR)
 	{
 		ft_putendl_fd(MALLOC_EMSG, STDERR_FILENO);
 		return (1);
 	}
-	start_philos_thread(&share, persons);
-	wait_philos_thread(&share, persons);
-	clean_data(&share, persons);
+	start_philos_thread(persons, &share);
+	wait_philos_thread(persons, &share);
+	clean_data(persons, &share);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/06 15:09:25 by mkamei            #+#    #+#             */
-/*   Updated: 2021/11/06 16:06:13 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/11/22 13:11:52 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,12 @@ void	write_mutex_long(t_mutex_long *l, long new_value)
 {
 	pthread_mutex_lock(&l->m);
 	l->val = new_value;
+	pthread_mutex_unlock(&l->m);
+}
+
+void	increase_mutex_long(t_mutex_long *l, long inc_value)
+{
+	pthread_mutex_lock(&l->m);
+	l->val += inc_value;
 	pthread_mutex_unlock(&l->m);
 }

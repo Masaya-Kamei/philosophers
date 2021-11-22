@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 12:04:23 by mkamei            #+#    #+#             */
-/*   Updated: 2021/11/06 16:02:14 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/11/22 14:25:00 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,6 @@
 # define MALLOC_EMSG "Malloc Error"
 # define USAGE_MSG "[Usage]\n./philo number_of_philosophers time_to_die \
 time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]"
-
-# define FORK_MSG "has taken a fork"
-# define EAT_MSG "is eating"
-# define SLEEP_MSG "is sleeping"
-# define THINK_MSG "is thinking"
-# define DIE_MSG "is died"
 
 typedef enum e_status
 {
@@ -61,6 +55,7 @@ typedef struct s_share
 	int				must_eat_num;
 	long			start_us_time;
 	t_mutex_long	someone_dead;
+	t_mutex_long	ate_philo_num;
 	pthread_mutex_t	*m_forks;
 }					t_share;
 
@@ -69,7 +64,6 @@ typedef struct s_person
 	int				id;
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	*left_fork;
-	t_mutex_long	dead;
 	t_mutex_long	last_eat_us_time;
 	pthread_t		work_thread;
 	pthread_t		die_thread;
@@ -77,12 +71,13 @@ typedef struct s_person
 }					t_person;
 
 // main
-void	start_philos_thread(t_share *share, t_person *persons);
+void	start_philos_thread(t_person *persons, t_share *share);
 
 // utils
 void	init_mutex_long(t_mutex_long *l, long init_value);
 long	read_mutex_long(t_mutex_long *l);
 void	write_mutex_long(t_mutex_long *l, long new_value);
+void	increase_mutex_long(t_mutex_long *l, long inc_value);
 long	get_us_time(void);
 void	my_usleep(const long us_time);
 size_t	ft_strlen(const char *s);
