@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 12:04:23 by mkamei            #+#    #+#             */
-/*   Updated: 2021/11/22 14:25:00 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/11/23 11:13:33 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ typedef enum e_philo_status
 	DIE		=	4
 }			t_philo_status;
 
-typedef struct e_mutex_long
+typedef struct s_mutex_long
 {
 	pthread_mutex_t	m;
 	long			val;
