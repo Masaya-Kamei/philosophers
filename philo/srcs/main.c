@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 12:03:53 by mkamei            #+#    #+#             */
-/*   Updated: 2021/11/22 14:15:11 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/11/26 11:39:18 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,15 @@ static t_status	init_data(t_person **persons, t_share *share)
 	i = -1;
 	while (++i < share->philo_num)
 	{
+		(*persons)[i].id = i;
+		(*persons)[i].share = share;
+		(*persons)[i].right_fork = &share->m_forks[i];
+		(*persons)[i].left_fork = &share->m_forks[(i + 1) % share->philo_num];
+		init_mutex_long(&(*persons)[i].last_eat_us_time, 0);
 		pthread_mutex_init(&share->m_forks[i], NULL);
 	}
 	init_mutex_long(&share->someone_dead, 0);
 	init_mutex_long(&share->ate_philo_num, 0);
-	share->start_us_time = get_us_time();
 	return (SUCCESS);
 }
 
@@ -72,6 +76,7 @@ static void	clean_data(t_person *persons, t_share *share)
 	i = -1;
 	while (++i < share->philo_num)
 	{
+		pthread_mutex_destroy(&persons[i].last_eat_us_time.m);
 		pthread_mutex_destroy(&share->m_forks[i]);
 	}
 	pthread_mutex_destroy(&share->someone_dead.m);

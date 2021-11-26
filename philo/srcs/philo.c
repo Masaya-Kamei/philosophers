@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 17:59:26 by mkamei            #+#    #+#             */
-/*   Updated: 2021/11/22 16:57:16 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/11/26 09:18:38 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,7 @@ static void	*run_philo_work(void *p)
 	t_person *const	person = p;
 	t_share *const	share = person->share;
 
-	person->right_fork = &share->m_forks[person->id];
-	person->left_fork = &share->m_forks[(person->id + 1) % share->philo_num];
-	init_mutex_long(&person->last_eat_us_time, share->start_us_time);
+	write_mutex_long(&person->last_eat_us_time, share->start_us_time);
 	pthread_create(&person->die_thread, NULL, check_dead, person);
 	if (person->id % 2 == 1)
 		my_usleep(200);
@@ -92,7 +90,6 @@ static void	*run_philo_work(void *p)
 		put_philo_status(person, share, THINK);
 	}
 	pthread_join(person->die_thread, NULL);
-	pthread_mutex_destroy(&person->last_eat_us_time.m);
 	return (NULL);
 }
 
@@ -100,11 +97,10 @@ void	start_philos_thread(t_person *persons, t_share *share)
 {
 	int		i;
 
+	share->start_us_time = get_us_time();
 	i = -1;
 	while (++i < share->philo_num)
 	{
-		persons[i].id = i;
-		persons[i].share = share;
 		pthread_create(
 			&persons[i].work_thread, NULL, run_philo_work, &persons[i]);
 	}
