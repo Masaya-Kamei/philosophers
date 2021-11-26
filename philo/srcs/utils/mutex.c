@@ -6,19 +6,19 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/06 15:09:25 by mkamei            #+#    #+#             */
-/*   Updated: 2021/11/22 13:11:52 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/11/26 13:09:15 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	init_mutex_long(t_mutex_long *l, long init_value)
+void	init_t_mutex_long(t_mutex_long *l, long init_value)
 {
 	pthread_mutex_init(&l->m, NULL);
 	l->val = init_value;
 }
 
-long	read_mutex_long(t_mutex_long *l)
+long	read_t_mutex_long(t_mutex_long *l)
 {
 	long	tmp;
 
@@ -28,14 +28,14 @@ long	read_mutex_long(t_mutex_long *l)
 	return (tmp);
 }
 
-void	write_mutex_long(t_mutex_long *l, long new_value)
+void	write_t_mutex_long(t_mutex_long *l, long new_value)
 {
 	pthread_mutex_lock(&l->m);
 	l->val = new_value;
 	pthread_mutex_unlock(&l->m);
 }
 
-void	increase_mutex_long(t_mutex_long *l, long inc_value)
+void	increase_t_mutex_long(t_mutex_long *l, long inc_value)
 {
 	pthread_mutex_lock(&l->m);
 	l->val += inc_value;

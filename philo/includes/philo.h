@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 12:04:23 by mkamei            #+#    #+#             */
-/*   Updated: 2021/11/23 11:13:33 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/11/26 13:09:30 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,10 @@ typedef struct s_person
 void	start_philos_thread(t_person *persons, t_share *share);
 
 // utils
-void	init_mutex_long(t_mutex_long *l, long init_value);
-long	read_mutex_long(t_mutex_long *l);
-void	write_mutex_long(t_mutex_long *l, long new_value);
-void	increase_mutex_long(t_mutex_long *l, long inc_value);
+void	init_t_mutex_long(t_mutex_long *l, long init_value);
+long	read_t_mutex_long(t_mutex_long *l);
+void	write_t_mutex_long(t_mutex_long *l, long new_value);
+void	increase_t_mutex_long(t_mutex_long *l, long inc_value);
 long	get_us_time(void);
 void	my_usleep(const long us_time);
 size_t	ft_strlen(const char *s);

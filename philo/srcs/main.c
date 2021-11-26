@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 12:03:53 by mkamei            #+#    #+#             */
-/*   Updated: 2021/11/26 11:39:18 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/11/26 13:10:20 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,11 @@ static t_status	init_data(t_person **persons, t_share *share)
 		(*persons)[i].share = share;
 		(*persons)[i].right_fork = &share->m_forks[i];
 		(*persons)[i].left_fork = &share->m_forks[(i + 1) % share->philo_num];
-		init_mutex_long(&(*persons)[i].last_eat_us_time, 0);
+		init_t_mutex_long(&(*persons)[i].last_eat_us_time, 0);
 		pthread_mutex_init(&share->m_forks[i], NULL);
 	}
-	init_mutex_long(&share->someone_dead, 0);
-	init_mutex_long(&share->ate_philo_num, 0);
+	init_t_mutex_long(&share->someone_dead, 0);
+	init_t_mutex_long(&share->ate_philo_num, 0);
 	return (SUCCESS);
 }
 
