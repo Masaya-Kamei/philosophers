@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 12:04:23 by mkamei            #+#    #+#             */
-/*   Updated: 2021/11/26 09:20:19 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/11/26 13:16:39 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <sys/time.h>
 # include <limits.h>
 # include <signal.h>
+# include <sys/wait.h>
 
 # define SYS_EMSG "Unexpected System Error"
 # define USAGE_MSG "[Usage]\n./philo number_of_philosophers time_to_die \
@@ -40,41 +41,44 @@ typedef enum e_philo_status
 
 typedef struct s_sem_long
 {
-	sem_t			*s;
-	long			val;
-}					t_sem_long;
+	sem_t	*s;
+	long	val;
+}			t_sem_long;
 
 typedef struct s_share
 {
-	int			philo_num;
-	int			ms_time_until_death;
-	int			eating_ms_time;
-	int			sleeping_ms_time;
-	int			must_eat_num;
-	long		start_us_time;
-	pid_t		eaten_monitor_pid;
-	sem_t		*s_ate_philo_num;
-	sem_t		*s_forks;
-}				t_share;
+	int		philo_num;
+	int		ms_time_until_death;
+	int		eating_ms_time;
+	int		sleeping_ms_time;
+	int		must_eat_num;
+	long	start_us_time;
+	pid_t	eaten_monitor_pid;
+	sem_t	*s_someone_dead;
+	sem_t	*s_ate_philo_num;
+	sem_t	*s_forks;
+}			t_share;
 
 typedef struct s_person
 {
-	int				id;
-	t_sem_long		last_eat_us_time;
-	pid_t			work_pid;
-	pthread_t		die_thread;
-	t_share			*share;
-}					t_person;
+	int			id;
+	t_sem_long	last_eat_us_time;
+	pid_t		work_pid;
+	pthread_t	die_thread;
+	t_share		*share;
+}				t_person;
 
 // main
 void	start_philos_process(t_person *persons, t_share *share);
 void	start_monitor_process(t_share *share);
 
 // utils
-void	init_sem_long(t_sem_long *l, const char *name, long init_value);
-long	read_sem_long(t_sem_long *l);
-void	write_sem_long(t_sem_long *l, long new_value);
-void	increase_sem_long(t_sem_long *l, long inc_value);
+sem_t	*my_sem_open(
+			const char *name, int oflag, mode_t mode, unsigned int value);
+void	init_t_sem_long(t_sem_long *l, const char *name, long init_value);
+long	read_t_sem_long(t_sem_long *l);
+void	write_t_sem_long(t_sem_long *l, long new_value);
+void	increase_t_sem_long(t_sem_long *l, long inc_value);
 long	get_us_time(void);
 void	my_usleep(const long us_time);
 char	*create_str_with_id(const char *str, int id);

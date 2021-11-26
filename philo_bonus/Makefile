@@ -6,7 +6,7 @@
 #    By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/22 17:07:27 by mkamei            #+#    #+#              #
-#    Updated: 2021/11/25 17:27:28 by mkamei           ###   ########.fr        #
+#    Updated: 2021/11/26 13:01:07 by mkamei           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ OBJSDIR	=	./objs
 OBJS	=	$(addprefix $(OBJSDIR)/, $(OBJSNAME))
 
 CC		=	gcc
-CFLAGS	=	-Wall -Wextra -Werror
+CFLAGS	=	-Wall -Wextra -Werror -pthread
 NAME	=	philo_bonus
 INCLUDE =	-I./includes/
 

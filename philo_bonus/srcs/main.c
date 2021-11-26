@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 12:03:53 by mkamei            #+#    #+#             */
-/*   Updated: 2021/11/26 11:21:30 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/11/26 13:14:47 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,9 @@ static void	init_data(t_person **persons, t_share *share)
 	int			i;
 	char		*sem_name;
 
-	share->s_forks = sem_open("/forks", oflag, S_IRWXU, share->philo_num);
-	if (share->s_forks == SEM_FAILED)
-		exit_with_errout(SYS_EMSG, 1);
-	sem_unlink("/forks");
-	share->s_ate_philo_num = sem_open("/ate_philo_num", oflag, S_IRWXU, 0);
-	if (share->s_ate_philo_num == SEM_FAILED)
-		exit_with_errout(SYS_EMSG, 1);
-	sem_unlink("/ate_philo_num");
+	share->s_forks = my_sem_open("/forks", oflag, S_IRWXU, share->philo_num);
+	share->s_ate_philo_num = my_sem_open("/ate_philo_num", oflag, S_IRWXU, 0);
+	share->s_someone_dead = my_sem_open("/someone_dead", oflag, S_IRWXU, 1);
 	*persons = malloc(sizeof(t_person) * share->philo_num);
 	if (*persons == NULL)
 		exit_with_errout(SYS_EMSG, 1);
@@ -55,7 +50,7 @@ static void	init_data(t_person **persons, t_share *share)
 		(*persons)[i].id = i;
 		(*persons)[i].share = share;
 		sem_name = create_str_with_id("/last_eat_us_time", (*persons)[i].id);
-		init_sem_long(&(*persons)[i].last_eat_us_time, sem_name, 0);
+		init_t_sem_long(&(*persons)[i].last_eat_us_time, sem_name, 0);
 		free(sem_name);
 	}
 }
@@ -82,6 +77,7 @@ static void	clean_data(t_person *persons, t_share *share)
 		sem_close(persons[i].last_eat_us_time.s);
 	sem_close(share->s_forks);
 	sem_close(share->s_ate_philo_num);
+	sem_close(share->s_someone_dead);
 	free(persons);
 }
 
