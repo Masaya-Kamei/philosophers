@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/25 08:52:22 by mkamei            #+#    #+#             */
-/*   Updated: 2021/11/25 10:31:56 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/11/26 11:23:13 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 
 void	init_sem_long(t_sem_long *l, const char *name, long init_value)
 {
-	l->s = sem_open(name, O_CREAT, S_IRWXU, 1);
+	l->s = sem_open(name, O_CREAT | O_EXCL, S_IRWXU, 1);
 	if (l->s == SEM_FAILED)
 		exit_with_errout(SYS_EMSG, 1);
+	sem_unlink(name);
 	l->val = init_value;
 }
 
