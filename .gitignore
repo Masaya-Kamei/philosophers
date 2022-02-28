@@ -2,4 +2,5 @@ philo/philo
 philo_bonus/philo_bonus
 *.o
 *.txt
-test.c
+*.d
+objs
