@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 12:03:53 by mkamei            #+#    #+#             */
-/*   Updated: 2022/03/01 08:20:15 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/03/01 15:38:27 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static t_status	init_data(t_philo **philos, t_share *share)
 	*philos = malloc(sizeof(t_philo) * share->philo_num);
 	if (*philos == NULL)
 		return (ERROR);
-	share->m_forks = malloc(sizeof(t_mutex_long) * share->philo_num);
+	share->m_forks = malloc(sizeof(pthread_mutex_t) * share->philo_num);
 	if (share->m_forks == NULL)
 		return (ERROR);
 	i = 0;
@@ -50,15 +50,15 @@ static t_status	init_data(t_philo **philos, t_share *share)
 		(*philos)[i].id = i;
 		(*philos)[i].share = share;
 		(*philos)[i].eat_num = 0;
-		(*philos)[i].right_fork = &share->m_forks[i].m;
-		(*philos)[i].left_fork = &share->m_forks[(i + 1) % share->philo_num].m;
+		(*philos)[i].right_fork = &share->m_forks[i];
+		(*philos)[i].left_fork = &share->m_forks[(i + 1) % share->philo_num];
 		init_mutex_long(&(*philos)[i].last_eat_us_time, start_us_time);
-		init_mutex_long(&share->m_forks[i], 0);
+		pthread_mutex_init(&share->m_forks[i], NULL);
 		i++;
 	}
 	share->start_us_time = start_us_time;
+	share->ate_philo_num = 0;
 	init_mutex_long(&share->continue_flag, 1);
-	init_mutex_long(&share->ate_philo_num, 0);
 	return (SUCCESS);
 }
 
@@ -70,11 +70,10 @@ static void	clean_data(t_philo *philos, t_share *share)
 	while (i < share->philo_num)
 	{
 		pthread_mutex_destroy(&philos[i].last_eat_us_time.m);
-		pthread_mutex_destroy(&share->m_forks[i].m);
+		pthread_mutex_destroy(&share->m_forks[i]);
 		i++;
 	}
 	pthread_mutex_destroy(&share->continue_flag.m);
-	pthread_mutex_destroy(&share->ate_philo_num.m);
 	free(philos);
 	free(share->m_forks);
 }
