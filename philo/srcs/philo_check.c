@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_end.c                                        :+:      :+:    :+:   */
+/*   philo_check.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 16:47:46 by mkamei            #+#    #+#             */
-/*   Updated: 2022/03/01 08:33:33 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/03/01 09:52:05 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,11 @@ void	count_eat_num(t_philo *philo, t_share *share)
 		return ;
 	philo->eat_num++;
 	if (philo->eat_num == share->must_eat_num)
+	{
 		increase_mutex_long(&share->ate_philo_num, 1);
-	if (read_mutex_long(&share->ate_philo_num) == share->philo_num)
-		last_put_philo_status(philo, share, EAT_MSG);
+		if (read_mutex_long(&share->ate_philo_num) == share->philo_num)
+			last_put_philo_status(philo, share, EAT_MSG);
+	}
 }
 
 void	*monitor_if_dead(void *p)
