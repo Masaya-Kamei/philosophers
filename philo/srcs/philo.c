@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 17:59:26 by mkamei            #+#    #+#             */
-/*   Updated: 2022/03/01 08:41:48 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/03/01 09:37:15 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,12 @@ static void	philo_eat(t_philo *philo, t_share *share)
 {
 	pthread_mutex_lock(philo->right_fork);
 	put_philo_status(philo, share, FORK_MSG);
+	if (share->philo_num == 1)
+	{
+		my_usleep((share->death_ms_time + 1) * 1000);
+		pthread_mutex_unlock(philo->right_fork);
+		return ;
+	}
 	pthread_mutex_lock(philo->left_fork);
 	put_philo_status(philo, share, FORK_MSG);
 	count_eat_num(philo, share);
@@ -54,7 +60,6 @@ void	*run_philo_work(void *p)
 	t_philo *const	philo = p;
 	t_share *const	share = philo->share;
 
-	printf("aaa\n");
 	pthread_create(&philo->dead_thread, NULL, monitor_if_dead, philo);
 	if (philo->id % 2 == 1)
 		my_usleep(200);
