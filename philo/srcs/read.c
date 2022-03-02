@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 14:32:45 by mkamei            #+#    #+#             */
-/*   Updated: 2022/03/02 14:50:16 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/03/02 18:36:39 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static t_status	atoi_with_check(const char *str, int *nbr)
 	return (SUCCESS);
 }
 
-t_status	read_args_with_check(int argc, char **argv, t_share *share)
+t_status	read_args_with_check(const int argc, char **argv, t_share *share)
 {
 	if (argc <= 4 || argc >= 7)
 		return (ERROR);

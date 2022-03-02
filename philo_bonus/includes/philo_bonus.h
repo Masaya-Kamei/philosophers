@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 12:04:23 by mkamei            #+#    #+#             */
-/*   Updated: 2022/03/02 14:56:49 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/03/02 18:37:15 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,9 @@ typedef struct s_sem_long
 typedef struct s_share
 {
 	int			philo_num;
-	int			death_ms_time;
-	int			eat_ms_time;
-	int			sleep_ms_time;
+	long		death_ms_time;
+	long		eat_ms_time;
+	long		sleep_ms_time;
 	int			must_eat_num;
 	long		start_us_time;
 	sem_t		*s_forks;
@@ -81,7 +81,7 @@ typedef struct s_philo
 }				t_philo;
 
 // main
-void	read_args_with_check(int argc, char **argv, t_share *share);
+void	read_args_with_check(const int argc, char **argv, t_share *share);
 void	fork_processes(t_philo *philos, t_share *share);
 void	wait_child_processes(t_philo *philos, t_share *share);
 void	someone_dead_monitor(t_share *share);
