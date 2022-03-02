@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 12:04:37 by mkamei            #+#    #+#             */
-/*   Updated: 2022/03/02 10:58:31 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/03/02 11:31:42 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,6 @@ void	loop_philo_routine(t_philo *philo, t_share *share)
 	write_sem_long(&philo->last_eat_us_time, share->start_us_time);
 	pthread_create(&philo->dead_monitor_thread, NULL, dead_monitor, philo);
 	pthread_detach(philo->dead_monitor_thread);
-	if (philo->id % 2 == 1)
-		my_usleep(200);
 	while (1)
 	{
 		philo_eat(philo, share);
