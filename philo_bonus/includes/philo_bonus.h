@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 12:04:23 by mkamei            #+#    #+#             */
-/*   Updated: 2022/03/02 14:37:43 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/03/02 14:56:49 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,9 @@
 # define USAGE_MSG "[Usage]\n./philo number_of_philosophers time_to_die \
 time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]"
 
+# define EXIT_DEAD 1
+# define EXIT_ATE 2
+
 typedef enum e_status
 {
 	SUCCESS	=	0,
@@ -42,7 +45,7 @@ typedef enum e_philo_status
 	EAT		= 1,
 	SLEEP	= 2,
 	THINK	= 3,
-	DIE		= 4,
+	DIE		= 4
 }			t_philo_status;
 
 typedef struct s_sem_long

@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 11:04:56 by mkamei            #+#    #+#             */
-/*   Updated: 2022/03/02 11:03:41 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/03/02 14:55:30 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	fork_someone_dead_monitor_process(t_share *share)
 	else if (share->someone_dead_monitor_pid == 0)
 	{
 		someone_dead_monitor(share);
-		exit(1);
+		exit(EXIT_DEAD);
 	}
 }
 
@@ -32,7 +32,7 @@ static void	fork_everyone_ate_monitor_process(t_share *share)
 	else if (share->everyone_ate_monitor_pid == 0)
 	{
 		everyone_ate_monitor(share);
-		exit(2);
+		exit(EXIT_ATE);
 	}
 }
 
@@ -65,9 +65,9 @@ void	wait_child_processes(t_philo *philos, t_share *share)
 
 	if (waitpid(0, &status, 0) == -1)
 		exit_with_errout(SYS_EMSG);
-	if (WIFEXITED(status) && WEXITSTATUS(status) == 1)
+	if (WIFEXITED(status) && WEXITSTATUS(status) == EXIT_DEAD)
 		kill(share->everyone_ate_monitor_pid, SIGKILL);
-	else if (WIFEXITED(status) && WEXITSTATUS(status) == 2)
+	else if (WIFEXITED(status) && WEXITSTATUS(status) == EXIT_ATE)
 		kill(share->someone_dead_monitor_pid, SIGKILL);
 	i = 0;
 	while (i < share->philo_num)
