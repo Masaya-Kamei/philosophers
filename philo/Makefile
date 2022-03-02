@@ -6,7 +6,7 @@
 #    By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/02 12:02:43 by mkamei            #+#    #+#              #
-#    Updated: 2022/03/02 08:47:01 by mkamei           ###   ########.fr        #
+#    Updated: 2022/03/02 11:17:23 by mkamei           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ $(OBJSDIR)/%.o	:	%.c
 -include $(DEPS)
 
 clean		:
-				$(RM) $(OBJS)
+				$(RM) $(OBJS) $(DEPS)
 
 fclean		:	clean
 				$(RM) $(NAME)
