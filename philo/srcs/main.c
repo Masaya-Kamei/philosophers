@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 12:03:53 by mkamei            #+#    #+#             */
-/*   Updated: 2022/03/01 15:38:27 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/03/02 10:44:35 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,17 +33,30 @@ static t_status	read_args_with_check(int argc, char **argv, t_share *share)
 	return (SUCCESS);
 }
 
-static t_status	init_data(t_philo **philos, t_share *share)
+static t_status	allocate_memory_to_data(t_philo **philos, t_share *share)
 {
-	const long	start_us_time = get_us_time();
-	int			i;
+	int		i;
 
-	*philos = malloc(sizeof(t_philo) * share->philo_num);
-	if (*philos == NULL)
-		return (ERROR);
 	share->m_forks = malloc(sizeof(pthread_mutex_t) * share->philo_num);
 	if (share->m_forks == NULL)
 		return (ERROR);
+	*philos = malloc(sizeof(t_philo) * share->philo_num);
+	if (*philos == NULL)
+	{
+		free(share->m_forks);
+		return (ERROR);
+	}
+	return (SUCCESS);
+}
+
+static t_status	init_data(t_philo **philos, t_share *share)
+{
+	int			i;
+
+	if (allocate_memory_to_data(philos, share) == ERROR)
+		return (ERROR);
+	share->ate_philo_num = 0;
+	init_mutex_long(&share->continue_flag, 1);
 	i = 0;
 	while (i < share->philo_num)
 	{
@@ -52,13 +65,10 @@ static t_status	init_data(t_philo **philos, t_share *share)
 		(*philos)[i].eat_num = 0;
 		(*philos)[i].right_fork = &share->m_forks[i];
 		(*philos)[i].left_fork = &share->m_forks[(i + 1) % share->philo_num];
-		init_mutex_long(&(*philos)[i].last_eat_us_time, start_us_time);
+		init_mutex_long(&(*philos)[i].last_eat_us_time, 0);
 		pthread_mutex_init(&share->m_forks[i], NULL);
 		i++;
 	}
-	share->start_us_time = start_us_time;
-	share->ate_philo_num = 0;
-	init_mutex_long(&share->continue_flag, 1);
 	return (SUCCESS);
 }
 

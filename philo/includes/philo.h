@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 12:04:23 by mkamei            #+#    #+#             */
-/*   Updated: 2022/03/01 15:30:42 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/03/02 10:43:10 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,11 @@ typedef enum e_status
 
 typedef enum e_philo_status
 {
-	FORK	= 0,
-	EAT		= 1,
-	SLEEP	= 2,
-	THINK	= 3,
-	DIE		= 4,
+	FORK	=	0,
+	EAT		=	1,
+	SLEEP	=	2,
+	THINK	=	3,
+	DIE		=	4
 }			t_philo_status;
 
 typedef struct s_mutex_long
@@ -54,8 +54,8 @@ typedef struct s_share
 	int				sleep_ms_time;
 	int				must_eat_num;
 	long			start_us_time;
+	int				ate_philo_num;
 	t_mutex_long	continue_flag;
-	long			ate_philo_num;
 	pthread_mutex_t	*m_forks;
 }					t_share;
 
@@ -66,24 +66,24 @@ typedef struct s_philo
 	pthread_mutex_t	*left_fork;
 	t_mutex_long	last_eat_us_time;
 	int				eat_num;
-	pthread_t		work_thread;
-	pthread_t		monitor_thread;
+	pthread_t		routine_thread;
+	pthread_t		dead_monitor_thread;
 	t_share			*share;
 }					t_philo;
 
 // main
 void	start_philos_thread(t_philo *philos, const int philo_num);
 void	wait_philos_thread(t_philo *philos, const int philo_num);
-void	*run_philo_work(void *p);
-void	*monitor_if_dead(void *p);
+void	*loop_philo_routine(void *p);
+void	*dead_monitor(void *p);
 void	put_philo_status(
 			t_philo *philo, t_share *share, const t_philo_status status);
 
 // utils
-void	init_mutex_long(t_mutex_long *l, long init_value);
+void	init_mutex_long(t_mutex_long *l, const long init_value);
 long	read_mutex_long(t_mutex_long *l);
-void	write_mutex_long(t_mutex_long *l, long new_value);
-void	increase_mutex_long(t_mutex_long *l, long inc_value);
+void	write_mutex_long(t_mutex_long *l, const long new_value);
+void	increase_mutex_long(t_mutex_long *l, const long inc_value);
 long	get_us_time(void);
 void	my_usleep(const long us_time);
 size_t	ft_strlen(const char *s);

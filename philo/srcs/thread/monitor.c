@@ -6,13 +6,13 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 16:47:46 by mkamei            #+#    #+#             */
-/*   Updated: 2022/03/01 15:19:53 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/03/01 18:27:54 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	*monitor_if_dead(void *p)
+void	*dead_monitor(void *p)
 {
 	t_philo *const	philo = p;
 	t_share *const	share = philo->share;

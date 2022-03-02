@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.c                                            :+:      :+:    :+:   */
+/*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 17:59:26 by mkamei            #+#    #+#             */
-/*   Updated: 2022/03/01 15:46:31 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/03/02 10:40:06 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,14 @@ static void	philo_think(t_philo *philo, t_share *share)
 	put_philo_status(philo, share, THINK);
 }
 
-void	*run_philo_work(void *p)
+void	*loop_philo_routine(void *p)
 {
 	t_philo *const	philo = p;
 	t_share *const	share = philo->share;
 
-	pthread_create(&philo->monitor_thread, NULL, monitor_if_dead, philo);
+	write_mutex_long(&philo->last_eat_us_time, share->start_us_time);
+	pthread_create(&philo->dead_monitor_thread, NULL, dead_monitor, philo);
+	pthread_detach(philo->dead_monitor_thread);
 	if (philo->id % 2 == 1)
 		my_usleep(200);
 	while (read_mutex_long(&share->continue_flag))
@@ -56,6 +58,5 @@ void	*run_philo_work(void *p)
 		philo_sleep(philo, share);
 		philo_think(philo, share);
 	}
-	pthread_join(philo->monitor_thread, NULL);
 	return (NULL);
 }
