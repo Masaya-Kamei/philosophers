@@ -6,13 +6,13 @@
 #    By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/22 17:07:27 by mkamei            #+#    #+#              #
-#    Updated: 2022/03/02 12:11:46 by mkamei           ###   ########.fr        #
+#    Updated: 2022/03/02 14:30:13 by mkamei           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 vpath   %.c srcs:srcs/process:srcs/utils
 
-SRCSNAME:=	main.c process.c entire_monitor.c \
+SRCSNAME:=	main.c read.c process.c entire_monitor.c \
 			routine.c monitor.c put_status.c \
 			str.c time.c sem.c exit.c create_str.c
 SRCSDIR	:=	./srcs

@@ -6,11 +6,21 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/25 09:43:28 by mkamei            #+#    #+#             */
-/*   Updated: 2022/02/28 17:40:39 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/03/02 14:32:18 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+static size_t	ft_strlen(const char *s)
+{
+	size_t	len;
+
+	len = 0;
+	while (s[len] != '\0')
+		len++;
+	return (len);
+}
 
 void	ft_putendl_fd(char *s, int fd)
 {

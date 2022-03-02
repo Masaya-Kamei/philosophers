@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 12:04:23 by mkamei            #+#    #+#             */
-/*   Updated: 2022/03/02 10:17:02 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/03/02 14:37:43 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,12 @@
 # define SYS_EMSG "Unexpected System Error"
 # define USAGE_MSG "[Usage]\n./philo number_of_philosophers time_to_die \
 time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]"
+
+typedef enum e_status
+{
+	SUCCESS	=	0,
+	ERROR	=	1
+}			t_status;
 
 typedef enum e_philo_status
 {
@@ -72,6 +78,7 @@ typedef struct s_philo
 }				t_philo;
 
 // main
+void	read_args_with_check(int argc, char **argv, t_share *share);
 void	fork_processes(t_philo *philos, t_share *share);
 void	wait_child_processes(t_philo *philos, t_share *share);
 void	someone_dead_monitor(t_share *share);
@@ -92,7 +99,6 @@ void	my_usleep(const long us_time);
 char	*create_str_with_id(const char *str, const int id);
 size_t	ft_strlen(const char *s);
 size_t	ft_strlcpy(char *dst, const char *src, size_t size);
-int		ft_atoi(const char *str);
 void	exit_with_errout(const char *errmsg);
 
 #endif

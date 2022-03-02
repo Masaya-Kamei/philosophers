@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 12:04:23 by mkamei            #+#    #+#             */
-/*   Updated: 2022/03/02 11:13:36 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/03/02 14:38:08 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,22 +72,21 @@ typedef struct s_philo
 }					t_philo;
 
 // main
-void	start_philos_thread(t_philo *philos, t_share *share);
-void	wait_philos_thread(t_philo *philos, t_share *share);
-void	*loop_philo_routine(void *p);
-void	*dead_monitor(void *p);
-void	put_philo_status(
-			t_philo *philo, t_share *share, const t_philo_status status);
+t_status	read_args_with_check(int argc, char **argv, t_share *share);
+void		start_philos_thread(t_philo *philos, t_share *share);
+void		wait_philos_thread(t_philo *philos, t_share *share);
+void		*loop_philo_routine(void *p);
+void		*dead_monitor(void *p);
+void		put_philo_status(
+				t_philo *philo, t_share *share, const t_philo_status status);
 
 // utils
-void	init_mutex_long(t_mutex_long *l, const long init_value);
-long	read_mutex_long(t_mutex_long *l);
-void	write_mutex_long(t_mutex_long *l, const long new_value);
-void	increase_mutex_long(t_mutex_long *l, const long inc_value);
-long	get_us_time(void);
-void	my_usleep(const long us_time);
-size_t	ft_strlen(const char *s);
-int		ft_atoi(const char *str);
-void	ft_putendl_fd(char *s, int fd);
+void		init_mutex_long(t_mutex_long *l, const long init_value);
+long		read_mutex_long(t_mutex_long *l);
+void		write_mutex_long(t_mutex_long *l, const long new_value);
+void		increase_mutex_long(t_mutex_long *l, const long inc_value);
+long		get_us_time(void);
+void		my_usleep(const long us_time);
+void		ft_putendl_fd(char *s, int fd);
 
 #endif

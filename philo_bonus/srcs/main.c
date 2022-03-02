@@ -6,31 +6,11 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 12:03:53 by mkamei            #+#    #+#             */
-/*   Updated: 2022/03/02 12:39:14 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/03/02 14:13:16 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
-
-static void	read_args_with_check(int argc, char **argv, t_share *share)
-{
-	if (argc <= 4 || argc >= 7)
-		exit_with_errout(USAGE_MSG);
-	share->philo_num = ft_atoi(argv[1]);
-	share->death_ms_time = ft_atoi(argv[2]);
-	share->eat_ms_time = ft_atoi(argv[3]);
-	share->sleep_ms_time = ft_atoi(argv[4]);
-	if (argc == 6)
-		share->must_eat_num = ft_atoi(argv[5]);
-	else
-		share->must_eat_num = -1;
-	if ((share->philo_num <= 0 || share->philo_num > 1000)
-		|| share->death_ms_time <= 0
-		|| share->eat_ms_time <= 0
-		|| share->sleep_ms_time <= 0
-		|| (argc == 6 && share->must_eat_num <= 0))
-		exit_with_errout(USAGE_MSG);
-}
 
 static void	allocate_memory(t_philo **philos, t_share *share)
 {
