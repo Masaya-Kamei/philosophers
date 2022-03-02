@@ -6,42 +6,49 @@
 #    By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/22 17:07:27 by mkamei            #+#    #+#              #
-#    Updated: 2021/11/26 13:01:07 by mkamei           ###   ########.fr        #
+#    Updated: 2022/03/02 10:31:15 by mkamei           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCSNAME=	main.c philo.c monitor.c \
-			utils/str.c utils/time.c utils/sem.c utils/put.c utils/create_str.c
-SRCSDIR	=	./srcs
-SRCS	=	$(addprefix $(SRCDIR)/, $(SRCNAME))
+vpath   %.c srcs:srcs/process:srcs/utils
 
-OBJSNAME=	$(SRCSNAME:.c=.o)
-OBJSDIR	=	./objs
-OBJS	=	$(addprefix $(OBJSDIR)/, $(OBJSNAME))
+SRCSNAME:=	main.c process.c entire_monitor.c \
+			routine.c monitor.c put_status.c \
+			str.c time.c sem.c exit.c create_str.c
+SRCSDIR	:=	./srcs
+SRCS	:=	$(addprefix $(SRCDIR)/, $(SRCNAME))
 
-CC		=	gcc
-CFLAGS	=	-Wall -Wextra -Werror -pthread
-NAME	=	philo_bonus
-INCLUDE =	-I./includes/
+OBJSDIR	:=	./objs
+OBJS	:=	$(addprefix $(OBJSDIR)/, $(SRCSNAME:.c=.o))
+DEPS	:=	$(addprefix $(OBJSDIR)/, $(SRCSNAME:.c=.d))
+
+NAME	:=	philo_bonus
+INCLUDE :=	-I./includes/
+
+CC		:=	gcc
+CFLAGS	:=	-Wall -Wextra -Werror -pthread
+CFLAGS	:=	-MMD -MP
+RM		:=	rm -rf
 
 all			:	$(NAME)
 
 $(NAME)		:	$(OBJS)
 				$(CC) $(CFLAGS) $(INCLUDE) -o $@ $(OBJS)
 
-$(OBJSDIR)/%.o	:	$(SRCSDIR)/%.c
+$(OBJSDIR)/%.o	:	%.c
 			@mkdir -p $(dir $@)
 			$(CC) $(CFLAGS) $(INCLUDE) -o $@ -c $<
 
-clean		:
-				-rm -f $(OBJS)
+-include $(DEPS)
 
-fclean		:
-				-rm -f $(NAME) $(OBJS)
+clean		:
+				$(RM) $(OBJS)
+
+fclean		:	clean
+				$(RM) $(NAME)
 
 re			:	fclean all
 
-address		:	CC		=	gcc
 address		:	CFLAGS	+=	-g -fsanitize=address
 address		:	re
 
@@ -49,7 +56,6 @@ leak		:	CC		=	/usr/local/opt/llvm/bin/clang
 leak		:	CFLAGS	+=	-g -fsanitize=leak
 leak		:	re
 
-thread		:	CC		=	gcc
 thread		:	CFLAGS	+=	-g -fsanitize=thread
 thread		:	re
 

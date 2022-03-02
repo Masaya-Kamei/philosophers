@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 14:56:21 by mkamei            #+#    #+#             */
-/*   Updated: 2021/11/25 09:50:08 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/03/01 16:44:44 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ static void	ft_putendl_fd(const char *s, int fd)
 	write(fd, "\n", 1);
 }
 
-void	exit_with_errout(const char *errmsg, int exit_status)
+void	exit_with_errout(const char *errmsg)
 {
 	ft_putendl_fd(errmsg, STDERR_FILENO);
-	exit(exit_status);
+	exit(EXIT_FAILURE);
 }

@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/25 14:56:14 by mkamei            #+#    #+#             */
-/*   Updated: 2021/11/25 14:58:36 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/03/02 10:12:18 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,11 +84,11 @@ char	*create_str_with_id(const char *str, int id)
 	char	*join;
 
 	id_str = ft_itoa(id);
-	if (!id_str)
-		exit_with_errout(SYS_EMSG, 1);
+	if (id_str == NULL)
+		exit_with_errout(SYS_EMSG);
 	join = ft_strjoin(str, id_str);
-	if (!join)
-		exit_with_errout(SYS_EMSG, 1);
+	if (join == NULL)
+		exit_with_errout(SYS_EMSG);
 	free(id_str);
 	return (join);
 }
