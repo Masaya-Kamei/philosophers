@@ -6,11 +6,11 @@
 #    By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/22 17:07:27 by mkamei            #+#    #+#              #
-#    Updated: 2022/03/02 14:30:13 by mkamei           ###   ########.fr        #
+#    Updated: 2022/03/02 18:19:31 by mkamei           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-vpath   %.c srcs:srcs/process:srcs/utils
+vpath   %.c srcs:srcs/philo:srcs/utils
 
 SRCSNAME:=	main.c read.c process.c entire_monitor.c \
 			routine.c monitor.c put_status.c \

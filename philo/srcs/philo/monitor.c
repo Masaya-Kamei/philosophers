@@ -5,12 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/01 12:32:24 by mkamei            #+#    #+#             */
-/*   Updated: 2022/03/01 18:25:33 by mkamei           ###   ########.fr       */
+/*   Created: 2022/02/28 16:47:46 by mkamei            #+#    #+#             */
+/*   Updated: 2022/03/02 18:22:08 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_bonus.h"
+#include "philo.h"
 
 void	*dead_monitor(void *p)
 {
@@ -19,9 +19,9 @@ void	*dead_monitor(void *p)
 	long			last_eat_us_time;
 	long			timelimit;
 
-	while (1)
+	while (read_mutex_long(&share->continue_flag))
 	{
-		last_eat_us_time = read_sem_long(&philo->last_eat_us_time);
+		last_eat_us_time = read_mutex_long(&philo->last_eat_us_time);
 		timelimit
 			= share->death_ms_time * 1000 - (get_us_time() - last_eat_us_time);
 		if (timelimit < 0)
@@ -29,7 +29,7 @@ void	*dead_monitor(void *p)
 			put_philo_status(philo, share, DIE);
 			break ;
 		}
-		my_usleep(20);
+		my_usleep(800);
 	}
 	return (NULL);
 }
