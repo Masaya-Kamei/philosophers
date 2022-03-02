@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 12:04:23 by mkamei            #+#    #+#             */
-/*   Updated: 2022/03/02 10:43:10 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/03/02 11:13:36 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,8 @@ typedef struct s_philo
 }					t_philo;
 
 // main
-void	start_philos_thread(t_philo *philos, const int philo_num);
-void	wait_philos_thread(t_philo *philos, const int philo_num);
+void	start_philos_thread(t_philo *philos, t_share *share);
+void	wait_philos_thread(t_philo *philos, t_share *share);
 void	*loop_philo_routine(void *p);
 void	*dead_monitor(void *p);
 void	put_philo_status(
