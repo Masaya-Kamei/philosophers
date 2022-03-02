@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 12:03:53 by mkamei            #+#    #+#             */
-/*   Updated: 2022/03/02 11:14:07 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/03/02 12:38:59 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static t_status	read_args_with_check(int argc, char **argv, t_share *share)
 	return (SUCCESS);
 }
 
-static t_status	allocate_memory_to_data(t_philo **philos, t_share *share)
+static t_status	allocate_memory(t_philo **philos, t_share *share)
 {
 	share->m_forks = malloc(sizeof(pthread_mutex_t) * share->philo_num);
 	if (share->m_forks == NULL)
@@ -51,7 +51,7 @@ static t_status	init_data(t_philo **philos, t_share *share)
 {
 	int			i;
 
-	if (allocate_memory_to_data(philos, share) == ERROR)
+	if (allocate_memory(philos, share) == ERROR)
 		return (ERROR);
 	share->ate_philo_num = 0;
 	init_mutex_long(&share->continue_flag, 1);

@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 12:03:53 by mkamei            #+#    #+#             */
-/*   Updated: 2022/03/02 11:34:59 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/03/02 12:39:14 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static void	read_args_with_check(int argc, char **argv, t_share *share)
 		exit_with_errout(USAGE_MSG);
 }
 
-static void	allocate_memory_to_data(t_philo **philos, t_share *share)
+static void	allocate_memory(t_philo **philos, t_share *share)
 {
 	*philos = malloc(sizeof(t_philo) * share->philo_num);
 	if (*philos == NULL)
@@ -44,7 +44,7 @@ static void	init_data(t_philo **philos, t_share *share)
 	int			i;
 	char		*sem_name;
 
-	allocate_memory_to_data(philos, share);
+	allocate_memory(philos, share);
 	share->s_forks = sem_open_unlink("/forks", share->philo_num);
 	share->s_continue = sem_open_unlink("/continue", 1);
 	share->s_dead_philo_count = sem_open_unlink("/dead_count", 0);
