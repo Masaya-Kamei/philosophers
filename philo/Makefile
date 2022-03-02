@@ -6,7 +6,7 @@
 #    By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/02 12:02:43 by mkamei            #+#    #+#              #
-#    Updated: 2022/03/02 11:17:23 by mkamei           ###   ########.fr        #
+#    Updated: 2022/03/02 12:11:32 by mkamei           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ RM      :=  rm -rf
 all			:	$(NAME)
 
 $(NAME)		:	$(OBJS)
-				$(CC) $(CFLAGS) $(INCLUDE) -o $@ $(OBJS)
+				$(CC) $(CFLAGS) -pthread $(INCLUDE) -o $@ $(OBJS)
 
 $(OBJSDIR)/%.o	:	%.c
 			@mkdir -p $(dir $@)

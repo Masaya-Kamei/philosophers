@@ -6,7 +6,7 @@
 #    By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/22 17:07:27 by mkamei            #+#    #+#              #
-#    Updated: 2022/03/02 11:17:14 by mkamei           ###   ########.fr        #
+#    Updated: 2022/03/02 12:11:46 by mkamei           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,14 +26,14 @@ NAME	:=	philo_bonus
 INCLUDE :=	-I./includes/
 
 CC		:=	gcc
-CFLAGS	:=	-Wall -Wextra -Werror -pthread
+CFLAGS	:=	-Wall -Wextra -Werror
 CFLAGS	:=	-MMD -MP
 RM		:=	rm -rf
 
 all			:	$(NAME)
 
 $(NAME)		:	$(OBJS)
-				$(CC) $(CFLAGS) $(INCLUDE) -o $@ $(OBJS)
+				$(CC) $(CFLAGS) -pthread $(INCLUDE) -o $@ $(OBJS)
 
 $(OBJSDIR)/%.o	:	%.c
 			@mkdir -p $(dir $@)
