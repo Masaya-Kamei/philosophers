@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 14:08:01 by mkamei            #+#    #+#             */
-/*   Updated: 2022/03/02 18:37:06 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/03/04 09:08:50 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,9 @@ void	read_args_with_check(const int argc, char **argv, t_share *share)
 		exit_with_errout(USAGE_MSG);
 	share->must_eat_num = -1;
 	if (atoi_with_check(argv[1], &share->philo_num) == ERROR
-		|| atoi_with_check(argv[2], &share->death_ms_time) == ERROR
-		|| atoi_with_check(argv[3], &share->eat_ms_time) == ERROR
-		|| atoi_with_check(argv[4], &share->sleep_ms_time) == ERROR
+		|| atoi_with_check(argv[2], (int *)&share->death_ms_time) == ERROR
+		|| atoi_with_check(argv[3], (int *)&share->eat_ms_time) == ERROR
+		|| atoi_with_check(argv[4], (int *)&share->sleep_ms_time) == ERROR
 		|| (argc == 6
 			&& atoi_with_check(argv[5], &share->must_eat_num) == ERROR))
 	{

@@ -6,7 +6,7 @@
 #    By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/22 17:07:27 by mkamei            #+#    #+#              #
-#    Updated: 2022/03/02 18:19:31 by mkamei           ###   ########.fr        #
+#    Updated: 2022/03/04 09:02:56 by mkamei           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ INCLUDE :=	-I./includes/
 
 CC		:=	gcc
 CFLAGS	:=	-Wall -Wextra -Werror
-CFLAGS	:=	-MMD -MP
+CFLAGS	+=	-MMD -MP
 RM		:=	rm -rf
 
 all			:	$(NAME)
