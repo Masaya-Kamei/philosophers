@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 15:42:16 by mkamei            #+#    #+#             */
-/*   Updated: 2022/03/02 18:16:10 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/03/09 10:14:26 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,4 +31,9 @@ void	my_usleep(const long us_time)
 		usleep(left_time / 2);
 		left_time = finish_us_time - get_us_time();
 	}
+}
+
+void	my_msleep(const long ms_time)
+{
+	my_usleep(ms_time * 1000);
 }

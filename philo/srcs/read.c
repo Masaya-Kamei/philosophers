@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 14:32:45 by mkamei            #+#    #+#             */
-/*   Updated: 2022/03/04 09:04:57 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/03/09 10:12:41 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,10 @@ t_status	read_args_with_check(const int argc, char **argv, t_share *share)
 		return (ERROR);
 	share->must_eat_num = -1;
 	if (atoi_with_check(argv[1], &share->philo_num) == ERROR
-		|| atoi_with_check(argv[2], (int *)&share->death_ms_time) == ERROR
-		|| atoi_with_check(argv[3], (int *)&share->eat_ms_time) == ERROR
-		|| atoi_with_check(argv[4], (int *)&share->sleep_ms_time) == ERROR
-		|| (argc == 6
-			&& atoi_with_check(argv[5], &share->must_eat_num) == ERROR))
+		|| atoi_with_check(argv[2], &share->death_ms_time) == ERROR
+		|| atoi_with_check(argv[3], &share->eat_ms_time) == ERROR
+		|| atoi_with_check(argv[4], &share->sleep_ms_time) == ERROR
+		|| (argv[5] && atoi_with_check(argv[5], &share->must_eat_num) == ERROR))
 	{
 		return (ERROR);
 	}
@@ -52,7 +51,7 @@ t_status	read_args_with_check(const int argc, char **argv, t_share *share)
 		|| share->death_ms_time <= 0
 		|| share->eat_ms_time <= 0
 		|| share->sleep_ms_time <= 0
-		|| (argc == 6 && share->must_eat_num <= 0))
+		|| (argv[5] && share->must_eat_num <= 0))
 	{
 		return (ERROR);
 	}

@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 17:59:26 by mkamei            #+#    #+#             */
-/*   Updated: 2022/03/02 12:28:48 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/03/09 10:16:42 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	philo_eat(t_philo *philo, t_share *share)
 	put_philo_status(philo, share, FORK);
 	if (share->philo_num == 1)
 	{
-		my_usleep((share->death_ms_time + 1) * 1000);
+		my_msleep((long)share->death_ms_time + 1);
 		pthread_mutex_unlock(philo->right_fork);
 		return ;
 	}
@@ -26,7 +26,7 @@ static void	philo_eat(t_philo *philo, t_share *share)
 	put_philo_status(philo, share, FORK);
 	write_mutex_long(&philo->last_eat_us_time, get_us_time());
 	put_philo_status(philo, share, EAT);
-	my_usleep(philo->share->eat_ms_time * 1000);
+	my_msleep(philo->share->eat_ms_time);
 	pthread_mutex_unlock(philo->right_fork);
 	pthread_mutex_unlock(philo->left_fork);
 }
@@ -34,7 +34,7 @@ static void	philo_eat(t_philo *philo, t_share *share)
 static void	philo_sleep(t_philo *philo, t_share *share)
 {
 	put_philo_status(philo, share, SLEEP);
-	my_usleep(share->sleep_ms_time * 1000);
+	my_msleep(share->sleep_ms_time);
 }
 
 static void	philo_think(t_philo *philo, t_share *share)

@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 12:04:23 by mkamei            #+#    #+#             */
-/*   Updated: 2022/03/02 18:36:24 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/03/09 10:13:39 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,9 @@ typedef struct s_mutex_long
 typedef struct s_share
 {
 	int				philo_num;
-	long			death_ms_time;
-	long			eat_ms_time;
-	long			sleep_ms_time;
+	int				death_ms_time;
+	int				eat_ms_time;
+	int				sleep_ms_time;
 	int				must_eat_num;
 	long			start_us_time;
 	int				ate_philo_num;
@@ -87,6 +87,7 @@ void		write_mutex_long(t_mutex_long *l, const long new_value);
 void		increase_mutex_long(t_mutex_long *l, const long inc_value);
 long		get_us_time(void);
 void		my_usleep(const long us_time);
+void		my_msleep(const long ms_time);
 void		ft_putendl_fd(char *s, int fd);
 
 #endif
