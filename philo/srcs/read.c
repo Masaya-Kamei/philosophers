@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 14:32:45 by mkamei            #+#    #+#             */
-/*   Updated: 2022/03/09 10:12:41 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/03/10 15:47:31 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,21 @@ static t_status	atoi_with_check(const char *str, int *nbr)
 	long	long_nbr;
 
 	i = 0;
+	if (str[i] == '+' || str[i] == '-')
+		i++;
 	long_nbr = 0;
 	while (str[i])
 	{
 		if (!(str[i] >= '0' && str[i] <= '9'))
 			return (ERROR);
 		long_nbr = (long_nbr * 10) + str[i] - '0';
-		if (long_nbr > INT32_MAX)
+		if ((str[0] != '-' && long_nbr > INT_MAX)
+			|| (str[0] == '-' && - long_nbr < INT_MIN))
 			return (ERROR);
 		i++;
 	}
-	if (long_nbr == 0)
-		return (ERROR);
+	if (str[0] == '-')
+		long_nbr *= -1;
 	*nbr = long_nbr;
 	return (SUCCESS);
 }

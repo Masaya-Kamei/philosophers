@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 12:03:53 by mkamei            #+#    #+#             */
-/*   Updated: 2022/03/02 14:39:01 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/03/14 07:44:14 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,20 +28,20 @@ static t_status	allocate_memory(t_philo **philos, t_share *share)
 
 static t_status	init_data(t_philo **philos, t_share *share)
 {
-	int			i;
+	int		i;
 
 	if (allocate_memory(philos, share) == ERROR)
 		return (ERROR);
-	share->ate_philo_num = 0;
+	init_mutex_long(&share->ate_philo_num, 0);
 	init_mutex_long(&share->continue_flag, 1);
 	i = 0;
 	while (i < share->philo_num)
 	{
-		(*philos)[i].id = i;
+		(*philos)[i].id = i + 1;
 		(*philos)[i].share = share;
 		(*philos)[i].eat_num = 0;
-		(*philos)[i].right_fork = &share->m_forks[i];
-		(*philos)[i].left_fork = &share->m_forks[(i + 1) % share->philo_num];
+		(*philos)[i].left_fork = &share->m_forks[i];
+		(*philos)[i].right_fork = &share->m_forks[(i + 1) % share->philo_num];
 		init_mutex_long(&(*philos)[i].last_eat_us_time, 0);
 		pthread_mutex_init(&share->m_forks[i], NULL);
 		i++;
@@ -60,6 +60,7 @@ static void	clean_data(t_philo *philos, t_share *share)
 		pthread_mutex_destroy(&share->m_forks[i]);
 		i++;
 	}
+	pthread_mutex_destroy(&share->ate_philo_num.m);
 	pthread_mutex_destroy(&share->continue_flag.m);
 	free(philos);
 	free(share->m_forks);

@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 12:04:23 by mkamei            #+#    #+#             */
-/*   Updated: 2022/03/09 10:28:08 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/03/14 07:35:08 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ sem_t	*sem_open_unlink(const char *name, const unsigned int value);
 void	init_sem_long(t_sem_long *l, const char *name, long init_value);
 long	read_sem_long(t_sem_long *l);
 void	write_sem_long(t_sem_long *l, const long new_value);
-void	increase_sem_long(t_sem_long *l, const long inc_value);
+long	increase_sem_long(t_sem_long *l, long inc_value);
 long	get_us_time(void);
 void	my_usleep(const long us_time);
 void	my_msleep(const long ms_time);

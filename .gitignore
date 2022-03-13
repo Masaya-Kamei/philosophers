@@ -4,3 +4,4 @@ philo_bonus/philo_bonus
 *.txt
 *.d
 objs
+*.log

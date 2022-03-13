@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 12:04:23 by mkamei            #+#    #+#             */
-/*   Updated: 2022/03/09 10:13:39 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/03/14 07:28:39 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ typedef struct s_share
 	int				sleep_ms_time;
 	int				must_eat_num;
 	long			start_us_time;
-	int				ate_philo_num;
+	t_mutex_long	ate_philo_num;
 	t_mutex_long	continue_flag;
 	pthread_mutex_t	*m_forks;
 }					t_share;
@@ -84,7 +84,7 @@ void		put_philo_status(
 void		init_mutex_long(t_mutex_long *l, const long init_value);
 long		read_mutex_long(t_mutex_long *l);
 void		write_mutex_long(t_mutex_long *l, const long new_value);
-void		increase_mutex_long(t_mutex_long *l, const long inc_value);
+long		increase_mutex_long(t_mutex_long *l, const long inc_value);
 long		get_us_time(void);
 void		my_usleep(const long us_time);
 void		my_msleep(const long ms_time);
