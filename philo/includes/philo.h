@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 12:04:23 by mkamei            #+#    #+#             */
-/*   Updated: 2022/03/14 13:00:07 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/03/15 08:08:44 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # define MALLOC_EMSG "Malloc Error"
 # define USAGE_MSG "[Usage]\n./philo number_of_philosophers time_to_die \
 time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]"
+# define DEBUG_FLAG 0
 
 typedef enum e_status
 {
@@ -46,6 +47,12 @@ typedef struct s_mutex_long
 	long			val;
 }					t_mutex_long;
 
+typedef struct s_fork
+{
+	t_mutex_long	next_user_id;
+	pthread_mutex_t	real;
+}					t_fork;
+
 typedef struct s_share
 {
 	int				philo_num;
@@ -56,14 +63,14 @@ typedef struct s_share
 	long			start_us_time;
 	t_mutex_long	ate_philo_num;
 	t_mutex_long	continue_flag;
-	pthread_mutex_t	*m_forks;
+	t_fork			*forks;
 }					t_share;
 
 typedef struct s_philo
 {
 	int				id;
-	pthread_mutex_t	*right_fork;
-	pthread_mutex_t	*left_fork;
+	t_fork			*left_fork;
+	t_fork			*right_fork;
 	t_mutex_long	last_eat_us_time;
 	int				eat_num;
 	pthread_t		routine_thread;
@@ -76,7 +83,9 @@ t_status	read_args_with_check(const int argc, char **argv, t_share *share);
 void		start_philos_thread(t_philo *philos, t_share *share);
 void		wait_philos_thread(t_philo *philos, t_share *share);
 void		*loop_philo_routine(void *p);
-void		*dead_monitor(void *p);
+void		philo_eat(t_philo *philo, t_share *share);
+void		philo_sleep(t_philo *philo, t_share *share);
+void		philo_think(t_philo *philo, t_share *share);
 void		put_philo_status(
 				t_philo *philo, t_share *share, const t_philo_status status);
 

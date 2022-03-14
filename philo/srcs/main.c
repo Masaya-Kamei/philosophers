@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 12:03:53 by mkamei            #+#    #+#             */
-/*   Updated: 2022/03/14 07:44:14 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/03/14 16:37:11 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 static t_status	allocate_memory(t_philo **philos, t_share *share)
 {
-	share->m_forks = malloc(sizeof(pthread_mutex_t) * share->philo_num);
-	if (share->m_forks == NULL)
+	share->forks = malloc(sizeof(t_fork) * share->philo_num);
+	if (share->forks == NULL)
 		return (ERROR);
 	*philos = malloc(sizeof(t_philo) * share->philo_num);
 	if (*philos == NULL)
 	{
-		free(share->m_forks);
+		free(share->forks);
 		return (ERROR);
 	}
 	return (SUCCESS);
@@ -37,13 +37,14 @@ static t_status	init_data(t_philo **philos, t_share *share)
 	i = 0;
 	while (i < share->philo_num)
 	{
-		(*philos)[i].id = i + 1;
+		pthread_mutex_init(&share->forks[i].real, NULL);
+		init_mutex_long(&share->forks[i].next_user_id, (i / 2) * 2);
+		(*philos)[i].id = i;
 		(*philos)[i].share = share;
 		(*philos)[i].eat_num = 0;
-		(*philos)[i].left_fork = &share->m_forks[i];
-		(*philos)[i].right_fork = &share->m_forks[(i + 1) % share->philo_num];
+		(*philos)[i].left_fork = &share->forks[i];
+		(*philos)[i].right_fork = &share->forks[(i + 1) % share->philo_num];
 		init_mutex_long(&(*philos)[i].last_eat_us_time, 0);
-		pthread_mutex_init(&share->m_forks[i], NULL);
 		i++;
 	}
 	return (SUCCESS);
@@ -57,13 +58,14 @@ static void	clean_data(t_philo *philos, t_share *share)
 	while (i < share->philo_num)
 	{
 		pthread_mutex_destroy(&philos[i].last_eat_us_time.m);
-		pthread_mutex_destroy(&share->m_forks[i]);
+		pthread_mutex_destroy(&share->forks[i].real);
+		pthread_mutex_destroy(&share->forks[i].next_user_id.m);
 		i++;
 	}
 	pthread_mutex_destroy(&share->ate_philo_num.m);
 	pthread_mutex_destroy(&share->continue_flag.m);
 	free(philos);
-	free(share->m_forks);
+	free(share->forks);
 }
 
 int	main(int argc, char **argv)

@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 12:04:23 by mkamei            #+#    #+#             */
-/*   Updated: 2022/03/14 13:01:07 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/03/14 16:29:30 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # define SYS_EMSG "Unexpected System Error"
 # define USAGE_MSG "[Usage]\n./philo number_of_philosophers time_to_die \
 time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]"
+# define DEBUG_FLAG 0
 
 # define EXIT_DEAD 1
 # define EXIT_ATE 2

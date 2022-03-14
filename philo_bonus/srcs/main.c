@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 12:03:53 by mkamei            #+#    #+#             */
-/*   Updated: 2022/03/14 07:33:55 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/03/14 16:27:30 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static void	init_data(t_philo **philos, t_share *share)
 	i = 0;
 	while (i < share->philo_num)
 	{
-		(*philos)[i].id = i + 1;
+		(*philos)[i].id = i;
 		(*philos)[i].share = share;
 		(*philos)[i].eat_num = 0;
 		sem_name = create_str_with_id("/last_eat_us_time", (*philos)[i].id);
