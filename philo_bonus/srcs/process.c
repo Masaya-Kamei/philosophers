@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 11:04:56 by mkamei            #+#    #+#             */
-/*   Updated: 2022/03/02 14:55:30 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/03/15 08:24:54 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,15 @@ static void	fork_someone_dead_monitor_process(t_share *share)
 	}
 }
 
-static void	fork_everyone_ate_monitor_process(t_share *share)
+static void	fork_everyone_eaten_monitor_process(t_share *share)
 {
-	share->everyone_ate_monitor_pid = fork();
-	if (share->everyone_ate_monitor_pid < 0)
+	share->everyone_eaten_monitor_pid = fork();
+	if (share->everyone_eaten_monitor_pid < 0)
 		exit_with_errout(SYS_EMSG);
-	else if (share->everyone_ate_monitor_pid == 0)
+	else if (share->everyone_eaten_monitor_pid == 0)
 	{
-		everyone_ate_monitor(share);
-		exit(EXIT_ATE);
+		everyone_eaten_monitor(share);
+		exit(EXIT_EATEN);
 	}
 }
 
@@ -41,7 +41,7 @@ void	fork_processes(t_philo *philos, t_share *share)
 	int		i;
 
 	fork_someone_dead_monitor_process(share);
-	fork_everyone_ate_monitor_process(share);
+	fork_everyone_eaten_monitor_process(share);
 	share->start_us_time = get_us_time();
 	i = 0;
 	while (i < share->philo_num)
@@ -66,8 +66,8 @@ void	wait_child_processes(t_philo *philos, t_share *share)
 	if (waitpid(0, &status, 0) == -1)
 		exit_with_errout(SYS_EMSG);
 	if (WIFEXITED(status) && WEXITSTATUS(status) == EXIT_DEAD)
-		kill(share->everyone_ate_monitor_pid, SIGKILL);
-	else if (WIFEXITED(status) && WEXITSTATUS(status) == EXIT_ATE)
+		kill(share->everyone_eaten_monitor_pid, SIGKILL);
+	else if (WIFEXITED(status) && WEXITSTATUS(status) == EXIT_EATEN)
 		kill(share->someone_dead_monitor_pid, SIGKILL);
 	i = 0;
 	while (i < share->philo_num)

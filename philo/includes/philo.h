@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 12:04:23 by mkamei            #+#    #+#             */
-/*   Updated: 2022/03/15 08:08:44 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/03/15 08:25:56 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ typedef struct s_share
 	int				sleep_ms_time;
 	int				must_eat_num;
 	long			start_us_time;
-	t_mutex_long	ate_philo_num;
+	t_mutex_long	eaten_philo_num;
 	t_mutex_long	continue_flag;
 	t_fork			*forks;
 }					t_share;

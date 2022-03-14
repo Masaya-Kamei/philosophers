@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 12:03:53 by mkamei            #+#    #+#             */
-/*   Updated: 2022/03/14 16:37:11 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/03/15 08:26:47 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static t_status	init_data(t_philo **philos, t_share *share)
 
 	if (allocate_memory(philos, share) == ERROR)
 		return (ERROR);
-	init_mutex_long(&share->ate_philo_num, 0);
+	init_mutex_long(&share->eaten_philo_num, 0);
 	init_mutex_long(&share->continue_flag, 1);
 	i = 0;
 	while (i < share->philo_num)
@@ -62,7 +62,7 @@ static void	clean_data(t_philo *philos, t_share *share)
 		pthread_mutex_destroy(&share->forks[i].next_user_id.m);
 		i++;
 	}
-	pthread_mutex_destroy(&share->ate_philo_num.m);
+	pthread_mutex_destroy(&share->eaten_philo_num.m);
 	pthread_mutex_destroy(&share->continue_flag.m);
 	free(philos);
 	free(share->forks);

@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 12:03:53 by mkamei            #+#    #+#             */
-/*   Updated: 2022/03/14 16:27:30 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/03/15 08:23:46 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	init_data(t_philo **philos, t_share *share)
 	share->s_forks = sem_open_unlink("/forks", share->philo_num);
 	share->s_continue = sem_open_unlink("/continue", 1);
 	share->s_dead_philo_count = sem_open_unlink("/dead_count", 0);
-	share->s_ate_philo_count = sem_open_unlink("/ate_count", 0);
+	share->s_eaten_philo_count = sem_open_unlink("/eaten_count", 0);
 	i = 0;
 	while (i < share->philo_num)
 	{
@@ -55,7 +55,7 @@ static void	clean_data(t_philo *philos, t_share *share)
 	sem_close(share->s_forks);
 	sem_close(share->s_continue);
 	sem_close(share->s_dead_philo_count);
-	sem_close(share->s_ate_philo_count);
+	sem_close(share->s_eaten_philo_count);
 	free(philos);
 }
 

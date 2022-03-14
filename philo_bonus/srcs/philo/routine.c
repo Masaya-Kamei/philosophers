@@ -6,36 +6,31 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 12:04:37 by mkamei            #+#    #+#             */
-/*   Updated: 2022/03/15 07:51:26 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/03/15 08:21:34 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-static void	philo_eat(t_philo *philo, t_share *share)
+static void	*dead_monitor(void *p)
 {
-	sem_wait(share->s_forks);
-	put_philo_status(philo, share, FORK);
-	sem_wait(share->s_forks);
-	put_philo_status(philo, share, FORK);
-	write_sem_long(&philo->last_eat_us_time, get_us_time());
-	put_philo_status(philo, share, EAT);
-	my_msleep(philo->share->eat_ms_time);
-	if (++philo->eat_num == share->must_eat_num)
-		sem_post(share->s_ate_philo_count);
-	sem_post(share->s_forks);
-	sem_post(share->s_forks);
-}
+	t_philo *const	philo = p;
+	t_share *const	share = philo->share;
+	long			last_eat_us_time;
+	long			uneaten_us_time;
 
-static void	philo_sleep(t_philo *philo, t_share *share)
-{
-	put_philo_status(philo, share, SLEEP);
-	my_msleep(share->sleep_ms_time);
-}
-
-static void	philo_think(t_philo *philo, t_share *share)
-{
-	put_philo_status(philo, share, THINK);
+	while (1)
+	{
+		last_eat_us_time = read_sem_long(&philo->last_eat_us_time);
+		uneaten_us_time = get_us_time() - last_eat_us_time;
+		if ((long)share->death_ms_time * 1000 < uneaten_us_time)
+		{
+			put_philo_status(philo, share, DIE);
+			break ;
+		}
+		usleep(800);
+	}
+	return (NULL);
 }
 
 static void	philo_one_routine(t_philo *philo, t_share *share)
