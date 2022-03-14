@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 16:47:46 by mkamei            #+#    #+#             */
-/*   Updated: 2022/03/09 10:24:28 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/03/14 12:56:33 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	*dead_monitor(void *p)
 			put_philo_status(philo, share, DIE);
 			break ;
 		}
-		my_usleep(800);
+		usleep(800);
 	}
 	return (NULL);
 }

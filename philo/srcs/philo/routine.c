@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 17:59:26 by mkamei            #+#    #+#             */
-/*   Updated: 2022/03/14 07:31:38 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/03/14 12:56:05 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	*loop_philo_routine(void *p)
 	if (share->philo_num == 1)
 		return (philo_one_routine(philo, share));
 	if (philo->id % 2 == 0)
-		my_usleep(800);
+		usleep(500);
 	while (read_mutex_long(&share->continue_flag))
 	{
 		philo_eat(philo, share);

@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 12:04:23 by mkamei            #+#    #+#             */
-/*   Updated: 2022/03/14 07:28:39 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/03/14 13:00:07 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ long		read_mutex_long(t_mutex_long *l);
 void		write_mutex_long(t_mutex_long *l, const long new_value);
 long		increase_mutex_long(t_mutex_long *l, const long inc_value);
 long		get_us_time(void);
-void		my_usleep(const long us_time);
 void		my_msleep(const long ms_time);
 void		ft_putendl_fd(char *s, int fd);
 

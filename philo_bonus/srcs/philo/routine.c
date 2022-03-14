@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 12:04:37 by mkamei            #+#    #+#             */
-/*   Updated: 2022/03/14 07:38:01 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/03/14 12:57:26 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	loop_philo_routine(t_philo *philo, t_share *share)
 	if (share->philo_num == 1)
 		return (philo_one_routine(philo, share));
 	if (philo->id % 2 == 0)
-		my_usleep(800);
+		usleep(500);
 	while (1)
 	{
 		philo_eat(philo, share);
