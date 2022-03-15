@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 12:04:23 by mkamei            #+#    #+#             */
-/*   Updated: 2022/03/15 08:22:18 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/03/15 10:11:26 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ typedef struct s_share
 	int			must_eat_num;
 	long		start_us_time;
 	sem_t		*s_forks;
+	sem_t		*s_forks_access;
 	sem_t		*s_continue;
 	pid_t		someone_dead_monitor_pid;
 	sem_t		*s_dead_philo_count;
