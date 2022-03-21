@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 12:03:53 by mkamei            #+#    #+#             */
-/*   Updated: 2022/03/15 08:26:47 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/03/19 16:58:54 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,19 +32,19 @@ static t_status	init_data(t_philo **philos, t_share *share)
 
 	if (allocate_memory(philos, share) == ERROR)
 		return (ERROR);
-	init_mutex_long(&share->eaten_philo_num, 0);
-	init_mutex_long(&share->continue_flag, 1);
+	init_safe_long(&share->eaten_philo_num, 0);
+	init_safe_long(&share->continue_flag, 1);
 	i = 0;
 	while (i < share->philo_num)
 	{
 		pthread_mutex_init(&share->forks[i].real, NULL);
-		init_mutex_long(&share->forks[i].next_user_id, (i / 2) * 2);
+		init_safe_long(&share->forks[i].last_user_id, -1);
 		(*philos)[i].id = i;
 		(*philos)[i].share = share;
 		(*philos)[i].eat_num = 0;
 		(*philos)[i].left_fork = &share->forks[i];
 		(*philos)[i].right_fork = &share->forks[(i + 1) % share->philo_num];
-		init_mutex_long(&(*philos)[i].last_eat_us_time, 0);
+		init_safe_long(&(*philos)[i].last_eat_us_time, 0);
 		i++;
 	}
 	return (SUCCESS);
@@ -59,7 +59,7 @@ static void	clean_data(t_philo *philos, t_share *share)
 	{
 		pthread_mutex_destroy(&philos[i].last_eat_us_time.m);
 		pthread_mutex_destroy(&share->forks[i].real);
-		pthread_mutex_destroy(&share->forks[i].next_user_id.m);
+		pthread_mutex_destroy(&share->forks[i].last_user_id.m);
 		i++;
 	}
 	pthread_mutex_destroy(&share->eaten_philo_num.m);

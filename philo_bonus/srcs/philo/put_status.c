@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 16:03:54 by mkamei            #+#    #+#             */
-/*   Updated: 2022/03/14 16:28:47 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/03/21 11:55:59 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,11 @@ void	put_philo_status(
 	const char	msgs[5][17]
 		= {"has taken a fork", "is eating",
 			"is sleeping", "is thinking", "died"};
-	long		passed_ms_time;
+	long		ms_time;
 
 	sem_wait(share->s_continue);
-	passed_ms_time = (get_us_time() - share->start_us_time) / 1000;
-	printf("%6ld %4d %s\n",
-		passed_ms_time, philo->id + !DEBUG_FLAG, msgs[status]);
+	ms_time = (get_us_time() - PASSED_TM_FLAG * share->start_us_time) / 1000;
+	printf("%6ld %4d %s\n", ms_time, philo->id + !DEBUG_FLAG, msgs[status]);
 	if (status == DIE)
 	{
 		sem_post(share->s_dead_philo_count);

@@ -6,14 +6,14 @@
 #    By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/02 12:02:43 by mkamei            #+#    #+#              #
-#    Updated: 2022/03/15 08:11:20 by mkamei           ###   ########.fr        #
+#    Updated: 2022/03/21 11:56:20 by mkamei           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 vpath   %.c srcs:srcs/philo:srcs/utils
 SRCSNAME:=	main.c read.c thread.c \
 			routine.c action.c put_status.c \
-			time.c mutex.c put.c
+			time.c safe.c put.c
 SRCSDIR	:=	./srcs
 SRCS	:=	$(addprefix $(SRCDIR)/, $(SRCNAME))
 

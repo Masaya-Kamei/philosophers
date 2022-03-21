@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 12:03:53 by mkamei            #+#    #+#             */
-/*   Updated: 2022/03/15 09:49:01 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/03/21 11:35:17 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,25 +19,37 @@ static void	allocate_memory(t_philo **philos, t_share *share)
 		exit_with_errout(SYS_EMSG);
 }
 
+static sem_t	*sem_open_and_unlink(const char *name, const unsigned int value)
+{
+	sem_t	*s;
+
+	s = sem_open(name, O_CREAT | O_EXCL, S_IRWXU, value);
+	if (s == SEM_FAILED)
+		exit_with_errout(SYS_EMSG);
+	sem_unlink(name);
+	return (s);
+}
+
 static void	init_data(t_philo **philos, t_share *share)
 {
 	int			i;
 	char		*sem_name;
+	const int	philo_num = share->philo_num;
 
 	allocate_memory(philos, share);
-	share->s_forks = sem_open_unlink("/forks", share->philo_num);
-	share->s_forks_access = sem_open_unlink("/forks_access", 1);
-	share->s_continue = sem_open_unlink("/continue", 1);
-	share->s_dead_philo_count = sem_open_unlink("/dead_count", 0);
-	share->s_eaten_philo_count = sem_open_unlink("/eaten_count", 0);
+	share->s_forks = sem_open_and_unlink("/forks", philo_num);
+	share->s_forks_access = sem_open_and_unlink("/access", (philo_num + 1) / 2);
+	share->s_continue = sem_open_and_unlink("/continue", 1);
+	share->s_dead_philo_count = sem_open_and_unlink("/dead_count", 0);
+	share->s_eaten_philo_count = sem_open_and_unlink("/eaten_count", 0);
 	i = 0;
-	while (i < share->philo_num)
+	while (i < philo_num)
 	{
 		(*philos)[i].id = i;
 		(*philos)[i].share = share;
 		(*philos)[i].eat_num = 0;
 		sem_name = create_str_with_id("/last_eat_us_time", (*philos)[i].id);
-		init_sem_long(&(*philos)[i].last_eat_us_time, sem_name, 0);
+		init_safe_long(&(*philos)[i].last_eat_us_time, sem_name, 0);
 		free(sem_name);
 		i++;
 	}

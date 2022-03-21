@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 12:04:23 by mkamei            #+#    #+#             */
-/*   Updated: 2022/03/15 08:25:56 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/03/21 11:55:29 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # define USAGE_MSG "[Usage]\n./philo number_of_philosophers time_to_die \
 time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]"
 # define DEBUG_FLAG 0
+# define PASSED_TM_FLAG 1
 
 typedef enum e_status
 {
@@ -41,15 +42,15 @@ typedef enum e_philo_status
 	DIE		=	4
 }			t_philo_status;
 
-typedef struct s_mutex_long
+typedef struct s_safe_long
 {
 	pthread_mutex_t	m;
 	long			val;
-}					t_mutex_long;
+}					t_safe_long;
 
 typedef struct s_fork
 {
-	t_mutex_long	next_user_id;
+	t_safe_long		last_user_id;
 	pthread_mutex_t	real;
 }					t_fork;
 
@@ -61,8 +62,8 @@ typedef struct s_share
 	int				sleep_ms_time;
 	int				must_eat_num;
 	long			start_us_time;
-	t_mutex_long	eaten_philo_num;
-	t_mutex_long	continue_flag;
+	t_safe_long		eaten_philo_num;
+	t_safe_long		continue_flag;
 	t_fork			*forks;
 }					t_share;
 
@@ -71,7 +72,7 @@ typedef struct s_philo
 	int				id;
 	t_fork			*left_fork;
 	t_fork			*right_fork;
-	t_mutex_long	last_eat_us_time;
+	t_safe_long		last_eat_us_time;
 	int				eat_num;
 	pthread_t		routine_thread;
 	pthread_t		dead_monitor_thread;
@@ -90,10 +91,10 @@ void		put_philo_status(
 				t_philo *philo, t_share *share, const t_philo_status status);
 
 // utils
-void		init_mutex_long(t_mutex_long *l, const long init_value);
-long		read_mutex_long(t_mutex_long *l);
-void		write_mutex_long(t_mutex_long *l, const long new_value);
-long		increase_mutex_long(t_mutex_long *l, const long inc_value);
+void		init_safe_long(t_safe_long *l, const long init_value);
+long		read_safe_long(t_safe_long *l);
+void		write_to_safe_long(t_safe_long *l, const long new_value);
+long		increase_safe_long(t_safe_long *l, const long inc_value);
 long		get_us_time(void);
 void		my_msleep(const long ms_time);
 void		ft_putendl_fd(char *s, int fd);

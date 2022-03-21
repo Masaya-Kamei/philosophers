@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 12:04:23 by mkamei            #+#    #+#             */
-/*   Updated: 2022/03/15 10:11:26 by mkamei           ###   ########.fr       */
+/*   Updated: 2022/03/21 11:55:50 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,10 @@
 # include <sys/wait.h>
 
 # define SYS_EMSG "Unexpected System Error"
-# define USAGE_MSG "[Usage]\n./philo number_of_philosophers time_to_die \
+# define USAGE_MSG "[Usage]\n./philo_bonus number_of_philosophers time_to_die \
 time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]"
 # define DEBUG_FLAG 0
+# define PASSED_TM_FLAG 1
 
 # define EXIT_DEAD 1
 # define EXIT_EATEN 2
@@ -49,11 +50,11 @@ typedef enum e_philo_status
 	DIE		= 4
 }			t_philo_status;
 
-typedef struct s_sem_long
+typedef struct s_safe_long
 {
 	sem_t	*s;
 	long	val;
-}			t_sem_long;
+}			t_safe_long;
 
 typedef struct s_share
 {
@@ -76,7 +77,7 @@ typedef struct s_philo
 {
 	int			id;
 	int			eat_num;
-	t_sem_long	last_eat_us_time;
+	t_safe_long	last_eat_us_time;
 	pid_t		routine_pid;
 	pthread_t	dead_monitor_thread;
 	t_share		*share;
@@ -96,11 +97,10 @@ void	put_philo_status(
 			t_philo *philo, t_share *share, const t_philo_status status);
 
 // utils
-sem_t	*sem_open_unlink(const char *name, const unsigned int value);
-void	init_sem_long(t_sem_long *l, const char *name, long init_value);
-long	read_sem_long(t_sem_long *l);
-void	write_sem_long(t_sem_long *l, const long new_value);
-long	increase_sem_long(t_sem_long *l, long inc_value);
+void	init_safe_long(t_safe_long *l, const char *name, long init_value);
+long	read_safe_long(t_safe_long *l);
+void	write_to_safe_long(t_safe_long *l, const long new_value);
+long	increase_safe_long(t_safe_long *l, long inc_value);
 long	get_us_time(void);
 void	my_msleep(const long ms_time);
 char	*create_str_with_id(const char *str, const int id);

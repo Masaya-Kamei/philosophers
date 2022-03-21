@@ -6,15 +6,15 @@
 #    By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/22 17:07:27 by mkamei            #+#    #+#              #
-#    Updated: 2022/03/15 08:16:14 by mkamei           ###   ########.fr        #
+#    Updated: 2022/03/21 11:22:09 by mkamei           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 vpath   %.c srcs:srcs/philo:srcs/utils
 
-SRCSNAME:=	main.c read.c process.c entire_monitor.c \
+SRCSNAME:=	main.c read.c process.c \
 			routine.c action.c put_status.c \
-			str.c time.c sem.c exit.c create_str.c
+			str.c time.c safe.c exit.c create_str.c
 SRCSDIR	:=	./srcs
 SRCS	:=	$(addprefix $(SRCDIR)/, $(SRCNAME))
 
